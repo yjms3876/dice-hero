@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#17205a" />
+    <title>サイコロ勇者バトル</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="game" aria-labelledby="gameTitle">
+      <header class="game-header">
+        <p class="eyebrow">DOKIDOKI DICE QUEST</p>
+        <h1 id="gameTitle">サイコロ勇者バトル</h1>
+        <div class="stage-map" aria-label="バトルの進み具合">
+          <span class="map-node active" data-stage="0">勇者</span>
+          <span class="map-line"></span>
+          <span class="map-node" data-stage="1">1</span>
+          <span class="map-line"></span>
+          <span class="map-node" data-stage="2">2</span>
+          <span class="map-line"></span>
+          <span class="map-node boss" data-stage="3">王</span>
+        </div>
+      </header>
+
+      <section class="battlefield" aria-label="モンスターとのバトル">
+        <div class="hero-zone">
+          <div class="nameplate">サイコロ勇者</div>
+          <div id="hero" class="character hero" aria-label="サイコロ勇者">
+            <img src="./assets/dice-hero.png" alt="剣とサイコロの盾を持った勇者" />
+          </div>
+        </div>
+
+        <div class="versus" aria-hidden="true">VS</div>
+
+        <div class="enemy-zone">
+          <div id="enemyName" class="nameplate enemy-name">スライム</div>
+          <div id="enemy" class="character enemy" aria-label="スライム">🟢</div>
+          <div class="hp-wrap">
+            <span>HP</span>
+            <div class="hp-track"><div id="enemyHp" class="hp-bar"></div></div>
+          </div>
+        </div>
+        <div id="battleEffect" class="battle-effect" aria-hidden="true"></div>
+      </section>
+
+      <section class="command-panel">
+        <div class="dice-stage" aria-label="サイコロの比較表示">
+          <div class="die-card">
+            <span class="die-label">いまの目</span>
+            <div id="baselineDie" class="die face-unknown" aria-live="polite"></div>
+          </div>
+          <div class="arrow" aria-hidden="true">➜</div>
+          <div class="die-card mystery-card">
+            <span class="die-label">つぎの目</span>
+            <div id="currentDie" class="die face-unknown" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div id="status" class="status" aria-live="polite">
+          「冒険スタート」をおして、モンスターにちょうせんしよう！
+        </div>
+
+        <div class="streak-box">れんぞくヒット <strong id="streak">0</strong><span>/ 3</span></div>
+
+        <div class="controls">
+          <button id="startBtn" class="btn start-btn">⚔️ 冒険スタート</button>
+          <button id="quitBtn" class="btn sub-btn" disabled>↩ やめる</button>
+        </div>
+
+        <div id="predictionButtons" class="prediction-buttons">
+          <button class="btn attack high" data-choice="high" disabled>
+            <span class="attack-icon">⬆</span>
+            <span><b>ハイアタック</b><small>大きい目が出る！</small></span>
+          </button>
+          <button class="btn attack low" data-choice="low" disabled>
+            <span class="attack-icon">⬇</span>
+            <span><b>ローアタック</b><small>小さい目が出る！</small></span>
+          </button>
+        </div>
+
+        <div id="roundButtons" class="round-buttons">
+          <button id="nextRoundBtn" class="btn start-btn" disabled>つぎの敵へ！ ➜</button>
+          <button id="stopBtn" class="btn sub-btn" disabled>冒険をおわる</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
