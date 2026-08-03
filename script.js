@@ -14,9 +14,9 @@ const enemyHpEl = document.getElementById("enemyHp");
 const battleEffectEl = document.getElementById("battleEffect");
 
 const enemies = [
-  { name: "ぷるぷるスライム", normal: "🟢", win: "😎", lose: "🥴" },
-  { name: "ほのおドラゴン", normal: "🐲", win: "🐲🔥", lose: "🐲💫" },
-  { name: "サイコロ魔王", normal: "👾", win: "👿", lose: "💥👾" },
+  { name: "レトロモンスター", image: "./assets/retro-monster.png", description: "サイコロの体を持つレトロモンスター" },
+  { name: "ほのおドラゴン", image: "./assets/fire-dragon.png", description: "胸に燃えるサイコロを宿したほのおドラゴン" },
+  { name: "サイコロ魔王", image: "./assets/dice-demon-king.png", description: "燃えるサイコロを操るサイコロ魔王" },
 ];
 
 let streak = 0;
@@ -124,7 +124,11 @@ function showBattleEffect(text, state) {
 function setEnemy(index) {
   const enemy = enemies[Math.min(index, enemies.length - 1)];
   enemyNameEl.textContent = enemy.name;
-  enemyEl.textContent = enemy.normal;
+  const enemyImage = document.createElement("img");
+  enemyImage.src = enemy.image;
+  enemyImage.alt = enemy.description;
+  enemyImage.draggable = false;
+  enemyEl.replaceChildren(enemyImage);
   enemyEl.setAttribute("aria-label", enemy.name);
   enemyHpEl.style.width = "100%";
   battlefieldEl.classList.remove("enemy-defeated", "enemy-winner", "hit", "hurt");
@@ -133,10 +137,8 @@ function setEnemy(index) {
 }
 
 function setEnemyResult(result) {
-  const enemy = enemies[Math.min(streak, enemies.length - 1)];
   const enemyIndex = result === "lose" ? Math.max(0, streak - 1) : Math.min(streak, enemies.length - 1);
   const resultEnemy = enemies[enemyIndex];
-  enemyEl.textContent = resultEnemy[result];
   enemyEl.setAttribute("aria-label", `${resultEnemy.name}の${result === "lose" ? "負けた" : "勝った"}表情`);
   battlefieldEl.classList.add(result === "lose" ? "enemy-defeated" : "enemy-winner");
 }
@@ -225,7 +227,7 @@ async function resolvePrediction(choice) {
 
   if (!result.correct) {
     playSound("miss");
-    showBattleEffect("ミス！", "hurt");
+    showBattleEffect("ざんねん！", "hurt");
     setEnemyResult("win");
     statusEl.textContent = `ざんねん！ ${baselineValue}から${nextValue}になった。もう一度ちょうせんしよう！`;
     updateButtons();
@@ -237,13 +239,13 @@ async function resolvePrediction(choice) {
   baselineValue = nextValue;
   enemyHpEl.style.width = "0%";
   playSound("hit");
-  showBattleEffect("会心の一撃！", "hit");
+  showBattleEffect("大当たり！", "hit");
   setEnemyResult("lose");
   updateMap();
 
   if (streak >= 3) {
     playSound("win");
-    statusEl.textContent = "3れんぞく正解！ サイコロ魔王をたおした！ 伝説のサイコロ勇者だ！";
+    statusEl.textContent = "3れんぞく正解！ サイコロ魔王をたおした！ 君は伝説のサイコロ勇者だ！";
     updateButtons();
     return;
   }
